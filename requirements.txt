@@ -1,0 +1,7 @@
+pocketflow>=0.0.1
+youtube-transcript-api>=0.6.1
+jinja2>=3.1.2
+validators>=0.22.0
+pyyaml>=6.0
+google-generativeai>=0.1.0
+certifi>=2023.7.22

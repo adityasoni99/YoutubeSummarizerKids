@@ -23,6 +23,7 @@ This project creates kid-friendly summaries of YouTube videos, making complex co
 - **Topic Extraction**: Identifies the main themes and topics discussed in the video
 - **Child-Friendly Explanations**: Simplifies complex concepts with analogies and simple vocabulary
 - **Interactive Q&A**: Generates questions and answers to help understand each topic
+- **Collapsible Sections**: Makes Q&A sections expandable/collapsible for better readability
 - **Visual Presentation**: Creates an engaging, colorful HTML summary
 
 ## Installation

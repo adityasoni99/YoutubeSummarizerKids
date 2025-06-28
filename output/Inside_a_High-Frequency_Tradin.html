@@ -73,7 +73,76 @@
                 border-radius: 8px;
                 margin: 10px 0;
             }
+            /* Collapsible styles */
+            .collapsible {
+                background-color: #ff9f43;
+                color: white;
+                cursor: pointer;
+                padding: 10px 15px;
+                width: 100%;
+                border: none;
+                text-align: left;
+                outline: none;
+                font-size: 16px;
+                border-radius: 8px 8px 0 0;
+                font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+                font-weight: bold;
+                margin-top: 15px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .active, .collapsible:hover {
+                background-color: #f39237;
+            }
+            .collapsible:after {
+                content: "➕";
+                font-size: 16px;
+            }
+            .active:after {
+                content: "➖";
+            }
+            .collapsible-content {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-out;
+                background-color: #fff;
+                border-radius: 0 0 8px 8px;
+                border: 1px solid #f0f0f0;
+                border-top: none;
+            }
+            .qa-container {
+                padding: 10px 15px;
+            }
+            .qa {
+                background-color: #fff;
+                padding: 10px 15px;
+                border-radius: 8px;
+                margin-bottom: 10px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            }
         </style>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var coll = document.getElementsByClassName("collapsible");
+                for (var i = 0; i < coll.length; i++) {
+                    coll[i].addEventListener("click", function() {
+                        this.classList.toggle("active");
+                        var content = this.nextElementSibling;
+                        if (content.style.maxHeight) {
+                            content.style.maxHeight = null;
+                        } else {
+                            content.style.maxHeight = content.scrollHeight + "px";
+                        }
+                    });
+                }
+                
+                // Auto-expand the first topic's Q&A by default
+                if (coll.length > 0) {
+                    coll[0].click();
+                }
+            });
+        </script>
     </head>
     <body>
         <h1>Inside a High-Frequency Trading System | Real-Time Architecture</h1>
@@ -81,7 +150,7 @@
         
         <div class="summary">
             <h2>Simple Summary</h2>
-            <p>Let's imagine a super-fast toy-trading race car!  It uses super-speedy computers to buy and sell toys faster than a blink!  Special parts make the car even faster, like a supercharged engine,  and a super-smart driver makes sure everything is safe and fair. It's like a super fun, super-fast game of buying and selling toys, but with amazing computers!  Then, the computers make sure everything is done correctly, like checking if you have enough money to buy the toys!
+            <p>Let's go on a super-fast toy-buying adventure!  We'll ride in a special race car that buys and sells toys faster than a blink!  This car uses super-duper speedy computers and special tricks to win every time.  It even has a smart co-pilot to make sure we buy the best toys without spending too much money! We'll check the car to make sure it's always super-fast and ready for the next race!
 </p>
         </div>
         
@@ -90,11 +159,13 @@
             <h2>How Topics Connect</h2>
             <ul>
                 
-                <li>So, we learned about the super-fast race car for buying and selling toys (HFT Architecture). Now, let's see what makes that race car so incredibly fast!  That's where ultra-low latency comes in.</li>
+                <li>Topic 1 introduces the idea of high-frequency trading as a super-fast race car. Topic 2 then explains how this 'race car' achieves its incredible speed using ultra-low latency techniques, like special roads and super-fast computers.</li>
                 
-                <li>Ultra-low latency is like having the best engine and the most skilled driver.  FPGA acceleration is like having a special supercharged engine for our race car, making it even FASTER!</li>
+                <li>Topic 2's focus on speed naturally leads into Topic 3, which details the special computer chips (FPGA) that make the 'race car' even faster. These chips are the engine of the super-speedy decision-making.</li>
                 
-                <li>With our super-fast race car (HFT system) using special engine parts (FPGA), and an amazing driver (ultra-low latency),  we need to make sure our toy orders are handled safely and correctly. That's what order management and risk mitigation is all about!</li>
+                <li>Once we understand how the 'race car' makes decisions (Topic 3), Topic 4 explains how it manages all those decisions and ensures it doesn't make mistakes (ordering the right 'pizza' and not overspending). It's like having a smart co-pilot.</li>
+                
+                <li>Finally, Topic 5 emphasizes the importance of constantly monitoring and optimizing the 'race car' (the trading system) to ensure it continues to perform at its best. It's like checking the car's oil and tires regularly.</li>
                 
             </ul>
         </div>
@@ -104,120 +175,168 @@
         
         <div class="topic">
             <h3>High-Frequency Trading (HFT) Architecture</h3>
-            <p>Imagine a super-fast race car for buying and selling toys!  This race car uses super-duper speedy computers to buy and sell toys much faster than you can blink. It checks the prices, decides what to buy or sell, and does it all in a tiny, tiny amount of time.  It's like a super-fast toy trading game!</p>
+            <p>Imagine a super-fast race car for buying and selling toys!  High-frequency trading is like that race car, zooming super fast to buy and sell toys (stocks) before anyone else. It uses special computer tricks to be incredibly quick!</p>
             
             <div class="explanation">
                 <h4>Simple Explanation:</h4>
-                <p>Let's say you want to buy and sell toy cars really, really quickly.  High-frequency trading is like having a super-fast computer that helps you do that! This computer gets information about toy car prices from all over the place, super fast. It's like having a special phone that tells you every time a toy car's price changes. The computer keeps track of all the toy car prices in its memory, like a super-smart list.  Then, using special instructions, it decides which toy cars to buy or sell to make a little money.  It sends these orders to the toy store super fast, faster than you can count to ten! But before it sends the order, it makes sure it's a safe order – like making sure you have enough money to buy the toy car. After it buys or sells, it keeps track of everything, making sure everything is fair and accurate. It's all about being super-fast and super-smart!</p>
+                <p>High-frequency trading is like a really, really fast toy store.  When you want to buy or sell a toy, you tell the store, and they do it instantly.  But this toy store is super special! It has super-fast computers that know exactly how many toys are available and how much they cost.  These computers use special signals to talk to each other even faster than you can blink!  They have a special list of all the toys (called an order book) and check it super quickly.  If they see a toy they want, they can buy it before anyone else! It’s like having a secret shortcut in the toy store. They even have special systems to make sure they don't accidentally buy too many toys and get into trouble!  All this happens so fast, it's like magic, but it's all done by clever computers.</p>
             </div>
             
-            <h4>Questions & Answers:</h4>
-            
-            <div class="qa">
-                <div class="question">Q: Why does the computer need to be so fast?</div>
-                <div class="answer">A: Because when buying and selling toys (or stocks!), prices change all the time!  The faster the computer is, the better chance it has to get the best prices and make a little money. It's like being first in line for the best toys!</div>
+            <button class="collapsible">Questions & Answers</button>
+            <div class="collapsible-content">
+                <div class="qa-container">
+                    
+                    <div class="qa">
+                        <div class="question">Q: Why is high-frequency trading so fast?</div>
+                        <div class="answer">A: It uses super-fast computers and special connections that let them talk to each other incredibly quickly, like a super-speedy phone call! They also have the toy list (order book) right in their computer's memory, so they don't have to wait to look up prices!</div>
+                    </div>
+                    
+                    <div class="qa">
+                        <div class="question">Q: Does it always win?</div>
+                        <div class="answer">A: No!  Sometimes, the super-fast computer might make a mistake, or another fast computer might beat it. It’s like a race – sometimes you win, sometimes you lose.</div>
+                    </div>
+                    
+                    <div class="qa">
+                        <div class="question">Q: Is it like playing a video game?</div>
+                        <div class="answer">A: It's a bit like a video game, but instead of points, they're buying and selling real toys (stocks)! The goal is to buy low and sell high, but it's all done with super-fast computers.</div>
+                    </div>
+                    
+                </div>
             </div>
-            
-            <div class="qa">
-                <div class="question">Q: Does the computer make mistakes?</div>
-                <div class="answer">A: Sometimes!  Even super-smart computers can make mistakes. That's why there are extra checks to make sure everything is correct before the computer buys or sells anything. It's like double-checking your toy car before you buy it to make sure it's not broken!</div>
-            </div>
-            
-            <div class="qa">
-                <div class="question">Q: Is it like playing a video game?</div>
-                <div class="answer">A: It's a bit like a very complicated video game!  There are many rules, and the computer needs to follow them very quickly to win (make money). But instead of points, it's about making smart trading decisions.</div>
-            </div>
-            
         </div>
         
         <div class="topic">
-            <h3>Ultra-Low Latency Components and Techniques</h3>
-            <p>Imagine a super-fast race!  Ultra-low latency is like having the fastest car and the best driver to win the race.  It means things happen super-duper quickly, so computers can make decisions in a flash!</p>
+            <h3>Ultra-Low Latency Techniques</h3>
+            <p>Imagine a super-fast race car for buying and selling toys!  It needs to be incredibly speedy to win, even faster than a blink of an eye.  These special race cars use super-fast computers and special roads to buy and sell toys before anyone else!</p>
             
             <div class="explanation">
                 <h4>Simple Explanation:</h4>
-                <p>Imagine you're playing a video game, and you want to move your character super fast.  Ultra-low latency is like making the game respond instantly to your commands.  It means everything is super speedy!  
-
-High-frequency trading (HFT) is like a super-fast race where computers buy and sell things very quickly.  To be the fastest, these computers need special parts and super-fast connections. Think of it like having a super-fast internet connection and a computer that's built for speed.  These computers use special tricks to make things happen even faster, skipping some of the usual steps to make things quicker.
-
-They also need super-accurate clocks to know exactly when things happen. It’s like having a super-precise stopwatch so they know who won the race at the exact same moment it finishes. This is important because even a tiny bit of delay can mean losing the race. So they need everything to be as fast as possible, even faster than a cheetah!
-
-They even use special ways to avoid delays.  It's like having a shortcut to avoid traffic jams!  This helps them make trades super quickly, before anyone else.</p>
+                <p>High-frequency trading (HFT) is like a super-fast race to buy and sell things, like toys!  Regular computers are slow like a bicycle; HFT computers are like rockets! They use special equipment and super-fast internet connections to be faster than anyone else.  They need to be super-precise about timing because even being a tiny bit slow can mean missing out on a great deal. Imagine you and a friend want to buy the last toy. The HFT computer is so fast, it's like it buys the toy before you even see it!  This special speed is all thanks to super-fast computers, great internet, and clever ways to send information.</p>
             </div>
             
-            <h4>Questions & Answers:</h4>
-            
-            <div class="qa">
-                <div class="question">Q: Why do computers need to be so fast for trading?</div>
-                <div class="answer">A: Because in trading, being even a tiny bit faster than others means you can buy or sell things at better prices.  It's like being first in line at the candy shop – you get the best sweets!</div>
+            <button class="collapsible">Questions & Answers</button>
+            <div class="collapsible-content">
+                <div class="qa-container">
+                    
+                    <div class="qa">
+                        <div class="question">Q: Why do these super-fast computers need to be so speedy?</div>
+                        <div class="answer">A: Because they're buying and selling things super fast!  If they're even a tiny bit slow, someone else might buy the toy or the thing before they can, and they'd miss out!</div>
+                    </div>
+                    
+                    <div class="qa">
+                        <div class="question">Q: What are those 'special roads' and 'super-fast computers'?</div>
+                        <div class="answer">A: The 'special roads' are like special, super-fast internet connections. The 'super-fast computers' are special computers that work way faster than regular computers, they even use super fast parts and special tricks to be as fast as possible! It's like having a super-powered brain!</div>
+                    </div>
+                    
+                    <div class="qa">
+                        <div class="question">Q: Is it like a game?</div>
+                        <div class="answer">A: It's a bit like a game, but it's about buying and selling things for real money! It's important to be super-fast and precise to win.</div>
+                    </div>
+                    
+                </div>
             </div>
-            
-            <div class="qa">
-                <div class="question">Q: What's a 'nanoscond'?</div>
-                <div class="answer">A: A nanoscond is a super-tiny amount of time! It's much, much smaller than a second. Imagine a second is like an hour, a nanoscond is like a tiny little speck of dust inside that hour!</div>
-            </div>
-            
-            <div class="qa">
-                <div class="question">Q: Why is it important to know exactly when things happen?</div>
-                <div class="answer">A: It's like knowing exactly who won the race. If you don't know the exact time, you might get the results wrong!  In trading, knowing the exact timing is super important to make the best decisions.</div>
-            </div>
-            
         </div>
         
         <div class="topic">
             <h3>FPGA Acceleration and Trading Logic</h3>
-            <p>Imagine a super-fast race car for buying and selling things!  It uses special computer chips that are super speedy to make trades really, really quickly.  This helps people buy and sell things at the best prices before anyone else!</p>
+            <p>Imagine a super-fast race car for buying and selling things!  This race car uses special computer chips that are super, super speedy.  They help make decisions about buying and selling things in a tiny fraction of a second, so you can win the race and get the best deals!</p>
             
             <div class="explanation">
                 <h4>Simple Explanation:</h4>
-                <p>Think of a toy store with lots of toys.  People want to buy and sell these toys super fast!  We have special computer chips called FPGAs (say it like 'fig-as').  These chips are like super-fast race cars for making trades.  When someone wants to buy a toy, the FPGA sees it super quickly and decides if it should sell a toy, or buy one.  It's much faster than a regular computer! These chips help decide things like: 'Should we sell this toy for a bit more?', 'Should we buy this toy because it's cheap?',  or 'Should we wait a bit?'  The FPGAs make these decisions super fast so we can buy and sell lots of toys before anyone else does! Some people even put all their toy-selling rules directly into the FPGA to make it even faster.</p>
+                <p>Let's say you're selling toys at a super-fast toy store.  Lots of people want to buy your toys all at once!  To make sure you sell them quickly and get the best price, you need a super-fast helper.  This helper is a special computer chip called an FPGA (say: F-P-G-A).  It's like a tiny, super-fast brain. When someone wants to buy a toy, the FPGA sees it instantly and decides how much to sell the toy for in a tiny, tiny blink of an eye, faster than you can say 'Zoom!'.  This helps the toy store make lots of money by selling things really quickly.  Some stores use these super-fast chips to make all their decisions, like a super-smart robot boss. Other stores use these special chips for super-fast parts of their job and a regular computer for the rest.</p>
             </div>
             
-            <h4>Questions & Answers:</h4>
-            
-            <div class="qa">
-                <div class="question">Q: Why are the FPGA race cars so fast?</div>
-                <div class="answer">A: Because they're special computer chips made just for super-speedy decisions! They don't waste time doing other things like regular computers do. It's like having a special race car just for winning races, instead of a regular car that has to do other things too!</div>
+            <button class="collapsible">Questions & Answers</button>
+            <div class="collapsible-content">
+                <div class="qa-container">
+                    
+                    <div class="qa">
+                        <div class="question">Q: What is an FPGA?</div>
+                        <div class="answer">A: An FPGA is a super-fast computer chip that helps make decisions really, really quickly! Think of it as a super-speedy brain for computers that helps buy and sell things in a blink!</div>
+                    </div>
+                    
+                    <div class="qa">
+                        <div class="question">Q: Why is it important to make decisions so fast when buying and selling?</div>
+                        <div class="answer">A: Because when buying and selling things, every tiny bit of time matters! The faster you make a decision, the more money you can make, like winning a super-fast race!  If you're too slow, someone else might buy or sell before you can.</div>
+                    </div>
+                    
+                    <div class="qa">
+                        <div class="question">Q: Can I have an FPGA in my toy?</div>
+                        <div class="answer">A: While FPGAs are super cool and make computers really fast, they're usually used for big, grown-up things like helping stores buy and sell things very quickly. They're too big and expensive to put in toys right now, but maybe someday!</div>
+                    </div>
+                    
+                </div>
             </div>
-            
-            <div class="qa">
-                <div class="question">Q: What do the FPGAs decide?</div>
-                <div class="answer">A: They decide things like if we should buy or sell a toy, and how much we should buy or sell it for. It's like being a super-fast toy shop manager who makes really quick decisions to make the most money!</div>
-            </div>
-            
-            <div class="qa">
-                <div class="question">Q: Are all computers as fast as FPGAs?</div>
-                <div class="answer">A: No! FPGAs are super special and way faster than most computers for making these super-fast trading decisions. It's like comparing a super-fast race car to a regular car – the race car is much faster!</div>
-            </div>
-            
         </div>
         
         <div class="topic">
             <h3>Order Management and Risk Mitigation</h3>
-            <p>Imagine you're ordering pizza!  Before the pizza place makes it, they check if you have enough money and if they can actually make the pizza you want.  Then, they make it, and they keep track of everything so they know if it was delivered and if you were happy! This is like how computers make sure our important orders are safe and handled properly.</p>
+            <p>Imagine you're ordering pizza!  A super-smart computer helps decide which pizza place to order from (like different stores), how to order it (fast or slow), and makes sure you don't spend too much money or order something silly. Then it keeps track of everything until your pizza arrives!</p>
             
             <div class="explanation">
                 <h4>Simple Explanation:</h4>
-                <p>Let's say you want to buy a toy online. Before the computer buys it for you, it does some important checks, like making sure you have enough money to pay for it and that the toy is actually available.  This is like double-checking before you give your money away! Then, the computer sends the order to the toy store. It's super fast, like a zoom!  After the toy store sends you your toy, the computer keeps a record of everything that happened, like a special notebook. This notebook keeps track of when you ordered it, when it was sent, and if everything went smoothly. So, even if things happen super quickly, the computer makes sure everything is safe and organized, like a super-organized helper!</p>
+                <p>Let's say you want to buy a toy online.  Instead of just clicking 'buy', a super-fast computer checks lots of things first! It's like a super-smart helper that makes sure everything is safe and goes smoothly. 
+
+First, it decides where to buy the toy from – maybe from Store A or Store B, whichever is faster and has the toy in stock.  It also decides how to buy it – quickly or carefully.  
+
+Before buying, the computer checks if you have enough money and if the toy is a good deal. It's like double-checking you have enough cash before you go to the store!  If anything looks wrong, it stops the order. 
+
+Once the toy is ordered, the computer keeps track of everything – where it's being shipped from, where it is now, and when it will arrive.  It's like a detective, following the toy until it reaches your house! This keeps everything organized and safe.</p>
             </div>
             
-            <h4>Questions & Answers:</h4>
+            <button class="collapsible">Questions & Answers</button>
+            <div class="collapsible-content">
+                <div class="qa-container">
+                    
+                    <div class="qa">
+                        <div class="question">Q: Why does the computer check if I have enough money before buying a toy?</div>
+                        <div class="answer">A: It's like checking if you have enough coins to buy candy!  The computer wants to make sure you don't spend more money than you have, so you don't get into trouble. It's like making sure you don’t try to buy a big toy with just one penny!</div>
+                    </div>
+                    
+                    <div class="qa">
+                        <div class="question">Q: What happens if the computer finds a problem with the order?</div>
+                        <div class="answer">A: If the computer sees something wrong, it stops the order immediately! It's like pressing a big 'STOP' button to prevent any mistakes. It's better to be safe than sorry!</div>
+                    </div>
+                    
+                    <div class="qa">
+                        <div class="question">Q: Why does the computer keep track of everything?</div>
+                        <div class="answer">A: It's like writing down everything in a notebook!  It keeps a record of when the toy was ordered, where it’s going, and when it arrives. This helps make sure everything goes perfectly and we know exactly what happened at every step!</div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+        <div class="topic">
+            <h3>Monitoring and Performance Optimization</h3>
+            <p>Imagine a race car!  We need to watch it closely to make sure it's going super fast and nothing is wrong.  We use special tools to check its speed and if anything breaks. This helps the car win the race!</p>
             
-            <div class="qa">
-                <div class="question">Q: What happens if the computer finds a mistake with my order?</div>
-                <div class="answer">A: If the computer finds a problem, like you don't have enough money or the toy is sold out, it stops the order before it's too late! It's like pausing the game to make sure everything is fair and works properly.</div>
+            <div class="explanation">
+                <h4>Simple Explanation:</h4>
+                <p>When computers do super-fast trading (like buying and selling toys really, really quickly!), we need to watch them carefully.  It's like being a pit crew for a race car. We have special tools that watch how fast the computer is working and if anything is slowing it down.  These tools show us numbers – like how long it takes to buy or sell something (that's like the race car's speed). If something is slow, we get a warning, like a flashing light, so we can fix it quickly.  If the computer is too slow, we might miss out on a great deal – like missing out on the best toy in the shop! That's why we need to always watch, so the computer can be super-fast and win the trading race.</p>
             </div>
             
-            <div class="qa">
-                <div class="question">Q: Why does the computer keep a special notebook?</div>
-                <div class="answer">A: The computer keeps a notebook so it can remember everything that happened with your order.  This helps keep track of things and helps them learn how to make ordering even faster and safer in the future. It's like keeping a record of your favorite games so you can play them again!</div>
+            <button class="collapsible">Questions & Answers</button>
+            <div class="collapsible-content">
+                <div class="qa-container">
+                    
+                    <div class="qa">
+                        <div class="question">Q: Why do we need to watch the computer so closely?</div>
+                        <div class="answer">A: Because if the computer is slow, it might miss out on making good trades! It's like if you're slow at getting your favorite toy, someone else might grab it first!</div>
+                    </div>
+                    
+                    <div class="qa">
+                        <div class="question">Q: What happens if the computer gets a warning?</div>
+                        <div class="answer">A: It's like a car needing a pit stop! We fix whatever is wrong so the computer can be super-fast again and keep making trades!</div>
+                    </div>
+                    
+                    <div class="qa">
+                        <div class="question">Q: What are those 'special tools' you talked about?</div>
+                        <div class="answer">A: They're like special computer programs that watch everything the computer is doing and tell us if it's working well. They show us numbers, like how fast it's working and if it made any mistakes.  It's like having a super-powered stopwatch and a checklist all in one!</div>
+                    </div>
+                    
+                </div>
             </div>
-            
-            <div class="qa">
-                <div class="question">Q: Is the computer always right?</div>
-                <div class="answer">A: The computer is very smart, but it's made by people.  Sometimes, even with all its checks, tiny mistakes can happen. But the people who made the computer are always working to make it better and safer. It's like learning to ride a bike – you might fall sometimes, but you get better with practice!</div>
-            </div>
-            
         </div>
         
     </body>

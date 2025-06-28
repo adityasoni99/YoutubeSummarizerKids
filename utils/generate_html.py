@@ -91,7 +91,76 @@ def generate_html(title, topics, summary, thumbnail_url, connections=None):
                 border-radius: 8px;
                 margin: 10px 0;
             }
+            /* Collapsible styles */
+            .collapsible {
+                background-color: #ff9f43;
+                color: white;
+                cursor: pointer;
+                padding: 10px 15px;
+                width: 100%;
+                border: none;
+                text-align: left;
+                outline: none;
+                font-size: 16px;
+                border-radius: 8px 8px 0 0;
+                font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+                font-weight: bold;
+                margin-top: 15px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .active, .collapsible:hover {
+                background-color: #f39237;
+            }
+            .collapsible:after {
+                content: "➕";
+                font-size: 16px;
+            }
+            .active:after {
+                content: "➖";
+            }
+            .collapsible-content {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-out;
+                background-color: #fff;
+                border-radius: 0 0 8px 8px;
+                border: 1px solid #f0f0f0;
+                border-top: none;
+            }
+            .qa-container {
+                padding: 10px 15px;
+            }
+            .qa {
+                background-color: #fff;
+                padding: 10px 15px;
+                border-radius: 8px;
+                margin-bottom: 10px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            }
         </style>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var coll = document.getElementsByClassName("collapsible");
+                for (var i = 0; i < coll.length; i++) {
+                    coll[i].addEventListener("click", function() {
+                        this.classList.toggle("active");
+                        var content = this.nextElementSibling;
+                        if (content.style.maxHeight) {
+                            content.style.maxHeight = null;
+                        } else {
+                            content.style.maxHeight = content.scrollHeight + "px";
+                        }
+                    });
+                }
+                
+                // Auto-expand the first topic's Q&A by default
+                if (coll.length > 0) {
+                    coll[0].click();
+                }
+            });
+        </script>
     </head>
     <body>
         <h1>{{ title }}</h1>
@@ -124,13 +193,17 @@ def generate_html(title, topics, summary, thumbnail_url, connections=None):
                 <p>{{ topic.explanation }}</p>
             </div>
             
-            <h4>Questions & Answers:</h4>
-            {% for qa in topic.qa_pairs %}
-            <div class="qa">
-                <div class="question">Q: {{ qa.question }}</div>
-                <div class="answer">A: {{ qa.answer }}</div>
+            <button class="collapsible">Questions & Answers</button>
+            <div class="collapsible-content">
+                <div class="qa-container">
+                    {% for qa in topic.qa_pairs %}
+                    <div class="qa">
+                        <div class="question">Q: {{ qa.question }}</div>
+                        <div class="answer">A: {{ qa.answer }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
-            {% endfor %}
         </div>
         {% endfor %}
     </body>
@@ -157,7 +230,8 @@ if __name__ == "__main__":
             {
                 "name": "Sunlight and Water Droplets",
                 "summary": "Rainbows happen when sunlight meets water drops in the air. The light splits into different colors like magic!",
-                "qa": [
+                "explanation": "When sunlight shines through raindrops, something amazing happens. The light bends and splits into different colors, just like when you use a prism in science class!",
+                "qa_pairs": [
                     {"question": "What makes the colors in a rainbow?", "answer": "Sunlight splits into different colors when it goes through water drops."},
                     {"question": "When can we see rainbows?", "answer": "We can see rainbows when the sun is behind us and it's raining in front of us."}
                 ]
@@ -165,7 +239,8 @@ if __name__ == "__main__":
             {
                 "name": "Rainbow Colors",
                 "summary": "Rainbows always have the same colors in the same order: red, orange, yellow, green, blue, indigo, and violet.",
-                "qa": [
+                "explanation": "Rainbows always show colors in the same order. You can remember them with the name ROY G. BIV - Red, Orange, Yellow, Green, Blue, Indigo, and Violet.",
+                "qa_pairs": [
                     {"question": "How many colors are in a rainbow?", "answer": "There are 7 main colors in a rainbow."},
                     {"question": "What's the first color in a rainbow?", "answer": "Red is the first color at the top of the rainbow."}
                 ]
